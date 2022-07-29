@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart' show ValueNotifier, mapEquals;
+import 'package:flutter/foundation.dart' show ValueNotifier, mapEquals, immutable;
 
+@immutable
 abstract class AppFormState<K, V> {
   AppFormState(Map<K, V> formState)
       : _formState = formState,
