@@ -8,7 +8,6 @@ typedef FormStateKey = String;
 
 class FormInput extends StatefulWidget {
   const FormInput({
-    required this.initialValue,
     required this.formState,
     required this.formStateKey,
     required this.labelText,
@@ -32,7 +31,6 @@ class FormInput extends StatefulWidget {
   final Iterable<String>? autofillHints;
   final int maxLines;
   final bool? readOnly;
-  final String initialValue;
   final OnChanged? onChanged;
   final Validator validator;
   final String labelText;
@@ -48,7 +46,7 @@ class _FormInputState extends State<FormInput> {
   @override
   void initState() {
     super.initState();
-    _controller.text = widget.initialValue;
+    _controller.text = widget.formState[widget.formStateKey];
   }
 
   @override

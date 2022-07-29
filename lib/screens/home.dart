@@ -49,7 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 const SizedBox(height: 40),
                 FormInput(
-                  initialValue: _formState['email'],
                   formState: _formState,
                   formStateKey: 'email',
                   labelText: 'Email',
@@ -57,7 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 const SizedBox(height: 20),
                 FormInput(
-                  initialValue: _formState['password'],
                   formState: _formState,
                   formStateKey: 'password',
                   labelText: 'Password',
