@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show ValueNotifier;
+import 'package:flutter/foundation.dart' show ValueNotifier, mapEquals;
 
 abstract class AppFormState<K, V> {
   AppFormState(Map<K, V> formState)
@@ -29,6 +29,8 @@ abstract class AppFormState<K, V> {
     _stateNotifier.value = {..._formState};
   }
 
+  V getValue(String key) => _formState[key]!;
+
   operator [](K key) => _formState[key];
   operator []=(K key, V newValue) {
     _formState.update(key, (value) => newValue);
@@ -37,4 +39,12 @@ abstract class AppFormState<K, V> {
 
   @override
   String toString() => {..._formState}.toString();
+
+  @override
+  bool operator ==(Object other) {
+    return other is AppFormState<K, V> && mapEquals(_formState, other._formState);
+  }
+
+  @override
+  int get hashCode => _formState.hashCode ^ _stateNotifier.hashCode;
 }
