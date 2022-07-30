@@ -46,13 +46,14 @@ class _FormInputState extends State<FormInput> {
   @override
   void initState() {
     super.initState();
+    // Find the notifier to use
     _controller.text = widget.formState[widget.formStateKey];
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: widget.formState.notifier,
+      valueListenable: widget.formState.getNotifier(widget.formStateKey),
       builder: (context, Map<dynamic, dynamic> formStateListenable, child) {
         _controller.text = formStateListenable[widget.formStateKey].toString();
         return TextFormField(

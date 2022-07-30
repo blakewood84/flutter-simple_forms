@@ -24,6 +24,9 @@ class _MyHomePageState extends State<MyHomePage> {
     await Future.delayed(const Duration(seconds: 2)).then((value) {
       _formState['email'] = 'BOOM!!';
     });
+    await Future.delayed(const Duration(seconds: 2)).then((value) {
+      _formState['password'] = 'BOOM # 2!!';
+    });
   }
 
   void _onSubmit() {
