@@ -55,7 +55,10 @@ class _FormInputState extends State<FormInput> {
     return ValueListenableBuilder(
       valueListenable: widget.formState.getNotifier(widget.formStateKey),
       builder: (context, Map<dynamic, dynamic> formStateListenable, child) {
-        _controller.text = formStateListenable[widget.formStateKey].toString();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _controller.text = widget.formState[widget.formStateKey].toString();
+          _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
+        });
         return TextFormField(
           controller: _controller,
           readOnly: widget.readOnly ?? false,
