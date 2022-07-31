@@ -102,7 +102,7 @@ class _FormInputState extends State<FormInput> {
             fillColor: Colors.white,
             filled: true,
           ),
-          onChanged: (String? val) => widget.formState.updateValue(widget.formStateKey, val),
+          onChanged: (String? val) => widget.formState.updateFormOnly(widget.formStateKey, val),
           validator: widget.validator,
         );
       },

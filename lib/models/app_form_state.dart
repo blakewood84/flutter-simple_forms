@@ -25,6 +25,10 @@ abstract class AppFormState<K, V> {
     _formState.remove(key);
   }
 
+  void updateFormOnly(K key, V newValue) {
+    _formState.update(key, (value) => newValue);
+  }
+
   void updateValues(Map<K, V> values) {
     _formState.addEntries(values.entries);
     for (final entry in values.entries) {
