@@ -38,16 +38,16 @@ class FormInput extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _controller = useTextEditingController();
+    final controller = useTextEditingController();
     return ValueListenableBuilder(
       valueListenable: formState.getNotifier(formStateKey),
       builder: (context, value, child) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          _controller.text = formState[formStateKey].toString();
-          _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
+          controller.text = formState[formStateKey].toString();
+          controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
         });
         return TextFormField(
-          controller: _controller,
+          controller: controller,
           readOnly: readOnly ?? false,
           keyboardType: textInputType,
           maxLines: maxLines,
