@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Simple Forms Demo',
+      title: 'Simple Forms',
       theme: ThemeData.dark(),
       home: const MyHomePage(),
     );
