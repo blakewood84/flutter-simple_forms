@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:simple_forms/models/app_form_state.dart';
 
-typedef OnChanged = Function(String? value);
 typedef Validator = String? Function(String? value);
-typedef FormStateKey = String;
+typedef FormStateKey = dynamic;
 
-class FormInput extends StatefulWidget {
+class FormInput extends HookWidget {
   const FormInput({
     required this.formState,
     required this.formStateKey,
     required this.labelText,
     required this.validator,
-    this.onChanged,
     this.autofillHints,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const [],
@@ -25,53 +25,40 @@ class FormInput extends StatefulWidget {
 
   final AppFormState formState;
   final FormStateKey formStateKey;
-  final TextCapitalization textCapitalization;
-  final List<TextInputFormatter> inputFormatters;
-  final TextInputType textInputType;
-  final Iterable<String>? autofillHints;
+
   final int maxLines;
   final bool? readOnly;
-  final OnChanged? onChanged;
-  final Validator validator;
   final String labelText;
   final bool? obscureText;
-
-  @override
-  State<FormInput> createState() => _FormInputState();
-}
-
-class _FormInputState extends State<FormInput> {
-  final _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    // Find the notifier to use
-    _controller.text = widget.formState[widget.formStateKey];
-  }
+  final Validator validator;
+  final TextInputType textInputType;
+  final Iterable<String>? autofillHints;
+  final TextCapitalization textCapitalization;
+  final List<TextInputFormatter> inputFormatters;
 
   @override
   Widget build(BuildContext context) {
+    final _controller = useTextEditingController();
     return ValueListenableBuilder(
-      valueListenable: widget.formState.getNotifier(widget.formStateKey),
-      builder: (context, Map<dynamic, dynamic> formStateListenable, child) {
+      valueListenable: formState.getNotifier(formStateKey),
+      builder: (context, value, child) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          _controller.text = widget.formState[widget.formStateKey].toString();
+          _controller.text = formState[formStateKey].toString();
           _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
         });
         return TextFormField(
           controller: _controller,
-          readOnly: widget.readOnly ?? false,
-          keyboardType: widget.textInputType,
-          maxLines: widget.maxLines,
+          readOnly: readOnly ?? false,
+          keyboardType: textInputType,
+          maxLines: maxLines,
           autocorrect: false,
-          obscureText: widget.obscureText ?? false,
-          inputFormatters: widget.inputFormatters,
-          textCapitalization: widget.textCapitalization,
-          autofillHints: widget.autofillHints,
+          obscureText: obscureText ?? false,
+          inputFormatters: inputFormatters,
+          textCapitalization: textCapitalization,
+          autofillHints: autofillHints,
           decoration: InputDecoration(
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            labelText: widget.labelText,
+            labelText: labelText,
             labelStyle: const TextStyle(
               color: Colors.black87,
             ),
@@ -102,8 +89,8 @@ class _FormInputState extends State<FormInput> {
             fillColor: Colors.white,
             filled: true,
           ),
-          onChanged: (String? val) => widget.formState.updateFormOnly(widget.formStateKey, val),
-          validator: widget.validator,
+          onChanged: (String? val) => formState.updateFormOnly(formStateKey, val!),
+          validator: validator,
         );
       },
     );
