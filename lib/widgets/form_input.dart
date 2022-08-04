@@ -13,6 +13,7 @@ class FormInput extends HookWidget {
     required this.formStateKey,
     required this.labelText,
     required this.validator,
+    this.inputDecoration,
     this.autofillHints,
     this.textCapitalization = TextCapitalization.none,
     this.inputFormatters = const [],
@@ -31,7 +32,9 @@ class FormInput extends HookWidget {
   final String labelText;
   final bool? obscureText;
   final Validator validator;
+
   final TextInputType textInputType;
+  final InputDecoration? inputDecoration;
   final Iterable<String>? autofillHints;
   final TextCapitalization textCapitalization;
   final List<TextInputFormatter> inputFormatters;
@@ -42,10 +45,12 @@ class FormInput extends HookWidget {
     return ValueListenableBuilder(
       valueListenable: formState.getNotifier(formStateKey),
       builder: (context, value, child) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          controller.text = formState[formStateKey].toString();
-          controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
-        });
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) {
+            controller.text = formState[formStateKey].toString();
+            controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+          },
+        );
         return TextFormField(
           controller: controller,
           readOnly: readOnly ?? false,
@@ -56,39 +61,7 @@ class FormInput extends HookWidget {
           inputFormatters: inputFormatters,
           textCapitalization: textCapitalization,
           autofillHints: autofillHints,
-          decoration: InputDecoration(
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            labelText: labelText,
-            labelStyle: const TextStyle(
-              color: Colors.black87,
-            ),
-            errorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.red,
-                width: 2.0,
-              ),
-            ),
-            focusedErrorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.red,
-                width: 2.0,
-              ),
-            ),
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.transparent,
-                width: 0.0,
-              ),
-            ),
-            focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.green,
-                width: 2.0,
-              ),
-            ),
-            fillColor: Colors.white,
-            filled: true,
-          ),
+          decoration: inputDecoration,
           onChanged: (String? val) => formState.updateFormOnly(formStateKey, val!),
           validator: validator,
         );
