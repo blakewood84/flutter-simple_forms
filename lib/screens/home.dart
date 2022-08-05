@@ -23,10 +23,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> setDelayedValue() async {
     await Future.delayed(const Duration(seconds: 2)).then((value) {
-      _formState['email'] = 'BOOM!!';
+      _formState['email'] = 'BOOM!!'; // Widget will show changed value
+      _formState.updateFormOnly('email', 'new@value.com'); // Widget won't display this value
     });
     await Future.delayed(const Duration(seconds: 2)).then((value) {
-      _formState['password'] = 'BOOM # 2!!';
+      _formState['password'] = 'BOOM # 2!!'; // Only the FormInput with password as key will update
     });
   }
 
